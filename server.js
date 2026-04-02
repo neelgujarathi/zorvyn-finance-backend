@@ -13,16 +13,15 @@ dotenv.config();
 
 const app = express();
 
-// 🔥 1. CORS FIRST (VERY IMPORTANT)
+// ✅ CORS FIRST
 app.use(cors({
-  origin: "*", // TEMP (later restrict)
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.options("*", cors());
+// ❌ REMOVE app.options("*", cors());
 
-// 🔥 2. BODY PARSER AFTER CORS
 app.use(express.json());
 
 // DB
@@ -41,7 +40,7 @@ app.use("/api/records", recordRoutes);
 app.use("/api/dashboard", dashboardRoute);
 app.use("/api/users", userRoutes);
 
-// 🔥 3. USE DYNAMIC PORT (VERY IMPORTANT)
+// ✅ Dynamic PORT
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
