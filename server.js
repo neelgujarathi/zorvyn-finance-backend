@@ -17,8 +17,14 @@ app.use(express.json());
 
 // CORS
 app.use(cors({
-  origin: ["http://localhost:5173", "https://zorvyn-finance-frontend.vercel.app/"]
+  origin: [
+    "http://localhost:5173",
+    "https://zorvyn-finance-frontend.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
+
 // Connect DB ONLY ONCE
 connectDB();
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
