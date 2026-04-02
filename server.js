@@ -15,12 +15,10 @@ const app = express();
 
 app.use(express.json());
 
-// CORS (keep this)
+// CORS
 app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
+  origin: "*"
 }));
-
 // Connect DB ONLY ONCE
 connectDB();
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
