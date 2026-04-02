@@ -13,20 +13,22 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.json());
-
-// CORS
+// 🔥 1. CORS FIRST (VERY IMPORTANT)
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://zorvyn-finance-frontend.vercel.app"
-  ],
+  origin: "*", // TEMP (later restrict)
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// Connect DB ONLY ONCE
+app.options("*", cors());
+
+// 🔥 2. BODY PARSER AFTER CORS
+app.use(express.json());
+
+// DB
 connectDB();
+
+// Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
@@ -39,5 +41,7 @@ app.use("/api/records", recordRoutes);
 app.use("/api/dashboard", dashboardRoute);
 app.use("/api/users", userRoutes);
 
-// Start server
-app.listen(5000, () => console.log("Server running on port 5000"));
+// 🔥 3. USE DYNAMIC PORT (VERY IMPORTANT)
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
